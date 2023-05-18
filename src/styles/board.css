@@ -1,0 +1,43 @@
+.board{
+  display: inline-grid;
+
+  padding: 10px;
+
+  grid-template-columns: repeat(var(--size), 60px);
+  grid-template-rows: repeat(var(--size), 60px);
+  gap: 4px;
+
+  background-color: #777;
+
+}
+
+.board > * {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: #FFFFFF;
+
+  border: 2px solid #BBBBBB;
+  user-select: none;
+}
+
+.board > [data-status = "hidden"] {
+  background-color: #BBBBBB;
+  cursor: pointer;
+}
+
+.board > [data-status = "mine"] {
+  background-color: #FF0000;
+}
+
+.board > [data-status = "number"] {
+  background-color: none;
+}
+
+.board > [data-status = "marked"] {
+  background-color: #EEFF00;
+}
