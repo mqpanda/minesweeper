@@ -1,6 +1,11 @@
 body{
   margin: 0;
-  background-color: #727272;
+  background-color: #8c8c8c;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
 }
 
 .title{
