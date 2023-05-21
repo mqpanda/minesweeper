@@ -38,9 +38,6 @@ document.body.appendChild(counter);
 document.body.appendChild(board);
 
 
-
-
-
 const BOARD_SIZE = 10
 const NUMBER_OF_MINES = 10
 
