@@ -21,7 +21,7 @@ export function createBoard(boardSize, numberOfMines) {
         element,
         x,
         y,
-        mine: false, // Initialize all tiles as non-mine
+        mine: false, 
         get status() {
           return this.element.dataset.status;
         },
@@ -57,24 +57,15 @@ export function createBoard(boardSize, numberOfMines) {
   return board;
 }
 
-let flagsPlaced = 0;
-
-
 export function markTile(tile) {
   if (tile.status === TILE_STATUSES.HIDDEN) {
-    if (flagsPlaced < NUMBER_OF_MINES) {
-      tile.status = TILE_STATUSES.MARKED;
-      flagsPlaced++;
-    }
+    tile.status = TILE_STATUSES.MARKED;
   } else if (tile.status === TILE_STATUSES.MARKED) {
-    tile.status = TILE_STATUSES.HIDDEN;
-    flagsPlaced--;
+    tile.status = TILE_STATUSES.FLAGGED;
   } else if (tile.status === TILE_STATUSES.FLAGGED) {
     tile.status = TILE_STATUSES.HIDDEN;
-    flagsPlaced--;
   }
 }
-
 
 
 export function revealTile(gameBoard, tile) {
@@ -135,8 +126,7 @@ return gameBoard.some(row => {
 function getMinePositions(boardSize, numberOfMines, firstTile) {
   const positions = [];
   const excludedPositions = new Set();
-
-  // Exclude the first tile position
+  
   excludedPositions.add(`${firstTile.x},${firstTile.y}`);
 
   while (positions.length < numberOfMines) {
