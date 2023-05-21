@@ -2,6 +2,21 @@
   box-sizing: border-box;
 }
 
+body {
+  -webkit-user-select: none; /* Disable text selection for Chrome, Safari, and Opera */
+  -moz-user-select: none; /* Disable text selection for Firefox */
+  -ms-user-select: none; /* Disable text selection for Internet Explorer and Edge */
+  user-select: none; /* Disable text selection for standard-compliant browsers */
+}
+
+.board {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+
 .board{
   display: inline-grid;
 
@@ -80,3 +95,4 @@
   /* Other styles */
   touch-action: none;
 }
+
