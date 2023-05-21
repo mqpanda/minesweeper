@@ -57,15 +57,24 @@ export function createBoard(boardSize, numberOfMines) {
   return board;
 }
 
+let flagsPlaced = 0;
+
+
 export function markTile(tile) {
   if (tile.status === TILE_STATUSES.HIDDEN) {
-    tile.status = TILE_STATUSES.MARKED;
+    if (flagsPlaced < NUMBER_OF_MINES) {
+      tile.status = TILE_STATUSES.MARKED;
+      flagsPlaced++;
+    }
   } else if (tile.status === TILE_STATUSES.MARKED) {
-    tile.status = TILE_STATUSES.FLAGGED;
+    tile.status = TILE_STATUSES.HIDDEN;
+    flagsPlaced--;
   } else if (tile.status === TILE_STATUSES.FLAGGED) {
     tile.status = TILE_STATUSES.HIDDEN;
+    flagsPlaced--;
   }
 }
+
 
 
 export function revealTile(gameBoard, tile) {
@@ -103,14 +112,15 @@ export function revealTile(gameBoard, tile) {
 }
 
 
-export function checkWin(gameBoard)
-{
+export function checkWin(gameBoard) {
   return gameBoard.every(row => {
     return row.every(tile => {
-      return tile.status === TILE_STATUSES.NUMBER || (tile.mine && (tile.status === TILE_STATUSES.HIDDEN 
-      || tile.status === TILE_STATUSES.MARKED))
-    })
-  })
+      return (
+        tile.status === TILE_STATUSES.NUMBER ||
+        (tile.mine && (tile.status === TILE_STATUSES.HIDDEN || tile.status === TILE_STATUSES.MARKED || tile.status === TILE_STATUSES.FLAGGED))
+      );
+    });
+  });
 }
 
 export function checkLose(gameBoard)
