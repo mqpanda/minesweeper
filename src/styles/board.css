@@ -47,6 +47,11 @@
 .board > [data-status = "marked"] {
   background-color: #EEFF00;
 }
+
+.board > [data-status = "flagged"] {
+  background-color: #EEFF00;
+}
+
 @media screen and (min-width: 901px) {
   .board {
     grid-template-columns: repeat(var(--size, 8), 30px);
