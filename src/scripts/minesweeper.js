@@ -5,6 +5,7 @@ export const TILE_STATUSES = {
   MINE: "mine",
   NUMBER: "number",
   MARKED: "marked",
+  FLAGGED: "flagged",
 }
 
 export function createBoard(boardSize, numberOfMines) {
@@ -57,19 +58,15 @@ export function createBoard(boardSize, numberOfMines) {
 }
 
 export function markTile(tile) {
-  if (
-    tile.status !== TILE_STATUSES.HIDDEN &&
-    tile.status !== TILE_STATUSES.MARKED
-  ) {
-    return
-  }
-
-  if (tile.status === TILE_STATUSES.MARKED) {
-    tile.status = TILE_STATUSES.HIDDEN
-  } else {
-    tile.status = TILE_STATUSES.MARKED
+  if (tile.status === TILE_STATUSES.HIDDEN) {
+    tile.status = TILE_STATUSES.MARKED;
+  } else if (tile.status === TILE_STATUSES.MARKED) {
+    tile.status = TILE_STATUSES.FLAGGED;
+  } else if (tile.status === TILE_STATUSES.FLAGGED) {
+    tile.status = TILE_STATUSES.HIDDEN;
   }
 }
+
 
 export function revealTile(gameBoard, tile) {
   if (tile.status !== TILE_STATUSES.HIDDEN) {
@@ -79,7 +76,7 @@ export function revealTile(gameBoard, tile) {
   // Первый ход пользователя
   if (gameBoard.every(row => row.every(tile => tile.status === TILE_STATUSES.HIDDEN))) {
     const boardSize = gameBoard.length;
-    const numberOfMines = 10; // Количество мин, которое вы хотите разместить
+    const numberOfMines = 0; // Количество мин, которое вы хотите разместить
     const minePositions = getMinePositions(boardSize, numberOfMines, tile); // Генерация позиций мин
     console.log(minePositions);
 

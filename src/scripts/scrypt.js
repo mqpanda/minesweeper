@@ -57,23 +57,30 @@ gameBoard.forEach(row => {
       checkGameEnd()
     })
     tile.element.addEventListener('contextmenu', e => {
-      e.preventDefault()
-      markTile(tile)
-      listMinesLeft()
-    })
+      e.preventDefault();
+      markTile(tile);
+      listMinesLeft();
+    });
+    
   })
 })
 boardElement.style.setProperty("--size", BOARD_SIZE)
 minesLeftText.textContent = NUMBER_OF_MINES
 
-function listMinesLeft()
-{
+function listMinesLeft() {
   const markedTilesCount = gameBoard.reduce((count, row) => {
-    return count + row.filter(tile => tile.status === TILE_STATUSES.MARKED).length
-  }, 0)
+    return (
+      count +
+      row.filter(
+        tile =>
+          tile.status === TILE_STATUSES.MARKED || tile.status === TILE_STATUSES.FLAGGED
+      ).length
+    );
+  }, 0);
 
-  minesLeftText.textContent = NUMBER_OF_MINES - markedTilesCount
+  minesLeftText.textContent = NUMBER_OF_MINES - markedTilesCount;
 }
+
 
 function checkGameEnd()
 {
