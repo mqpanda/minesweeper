@@ -7,19 +7,12 @@ export const TILE_STATUSES = {
   MARKED: "marked",
 }
 
-
-
-export function createBoard(boardSize, numberOfMines)
-{
+export function createBoard(boardSize, numberOfMines) {
   const board = [];
-  const minePositions = getMinePositions(boardSize, numberOfMines)
-  console.log(minePositions)
 
-  for (let x = 0; x < boardSize; x++)
-  {
+  for (let x = 0; x < boardSize; x++) {
     const row = [];
-    for (let y = 0; y < boardSize; y++)
-    {
+    for (let y = 0; y < boardSize; y++) {
       const element = document.createElement('div');
       element.dataset.status = TILE_STATUSES.HIDDEN;
 
@@ -27,7 +20,7 @@ export function createBoard(boardSize, numberOfMines)
         element,
         x,
         y,
-        mine: minePositions.some(positionMatch.bind(null, {x, y})),
+        mine: false, // Initialize all tiles as non-mine
         get status() {
           return this.element.dataset.status;
         },
@@ -36,13 +29,31 @@ export function createBoard(boardSize, numberOfMines)
         }
       }
 
-      row.push(tile)
+      tile.element.addEventListener('click', () => {
+        // Generate mine positions if it's the first move
+        if (board.every(row => row.every(tile => tile.status !== TILE_STATUSES.NUMBER))) {
+          const minePositions = getMinePositions(boardSize, numberOfMines, tile);
+          minePositions.forEach(({ x, y }) => {
+            board[x][y].mine = true;
+          });
+        }
+        
+        revealTile(board, tile);
+        checkGameEnd();
+      });
+
+      tile.element.addEventListener('contextmenu', e => {
+        e.preventDefault();
+        markTile(tile);
+        listMinesLeft();
+      });
+
+      row.push(tile);
     }
-    board.push(row)
+    board.push(row);
   }
 
   return board;
-
 }
 
 export function markTile(tile) {
@@ -60,27 +71,40 @@ export function markTile(tile) {
   }
 }
 
-export function revealTile(gameBoard, tile) 
-{
-  if(tile.status !== TILE_STATUSES.HIDDEN) {
-    return
+export function revealTile(gameBoard, tile) {
+  if (tile.status !== TILE_STATUSES.HIDDEN) {
+    return;
   }
 
-  if(tile.mine) {
-    tile.status = TILE_STATUSES.MINE
-    return
+  // Первый ход пользователя
+  if (gameBoard.every(row => row.every(tile => tile.status === TILE_STATUSES.HIDDEN))) {
+    const boardSize = gameBoard.length;
+    const numberOfMines = 10; // Количество мин, которое вы хотите разместить
+    const minePositions = getMinePositions(boardSize, numberOfMines, tile); // Генерация позиций мин
+    console.log(minePositions);
+
+    // Обновление свойства mine для соответствующих тайлов на доске
+    minePositions.forEach(position => {
+      const { x, y } = position;
+      gameBoard[x][y].mine = true;
+    });
   }
 
-  tile.status = TILE_STATUSES.NUMBER
-  const adjacentTiles = nearbyTiles (gameBoard, tile)
-  const mines = adjacentTiles.filter(t => t.mine)
-  if (mines.length === 0)
-  {
-    adjacentTiles.forEach(revealTile.bind(null, gameBoard))
+  if (tile.mine) {
+    tile.status = TILE_STATUSES.MINE;
+    return;
+  }
+
+  tile.status = TILE_STATUSES.NUMBER;
+  const adjacentTiles = nearbyTiles(gameBoard, tile);
+  const mines = adjacentTiles.filter(t => t.mine);
+  if (mines.length === 0) {
+    adjacentTiles.forEach(revealTile.bind(null, gameBoard));
   } else {
-    tile.element.textContent = mines.length
+    tile.element.textContent = mines.length;
   }
 }
+
 
 export function checkWin(gameBoard)
 {
@@ -101,21 +125,27 @@ return gameBoard.some(row => {
 })
 }
 
-function getMinePositions(boardSize, numberOfMines) {
-  const positions = []
+function getMinePositions(boardSize, numberOfMines, firstTile) {
+  const positions = [];
+  const excludedPositions = new Set();
+
+  // Exclude the first tile position
+  excludedPositions.add(`${firstTile.x},${firstTile.y}`);
 
   while (positions.length < numberOfMines) {
     const position = {
       x: randomNumber(boardSize),
       y: randomNumber(boardSize),
-    }
+    };
 
-    if (!positions.some(positionMatch.bind(null, position))) {
-      positions.push(position)
+    const positionString = `${position.x},${position.y}`;
+    if (!excludedPositions.has(positionString)) {
+      positions.push(position);
+      excludedPositions.add(positionString);
     }
   }
 
-  return positions
+  return positions;
 }
 
 function positionMatch(a, b) {
