@@ -40,6 +40,7 @@ export function createBoard(boardSize, numberOfMines)
   }
 
   return board;
+
 }
 
 function getMinePositions(boardSize, numberOfMines)
