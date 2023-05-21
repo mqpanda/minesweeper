@@ -41,8 +41,8 @@ document.body.appendChild(board);
 
 
 
-const BOARD_SIZE = 8
-const NUMBER_OF_MINES = 2
+const BOARD_SIZE = 10
+const NUMBER_OF_MINES = 10
 
 
 const gameBoard = createBoard(BOARD_SIZE, NUMBER_OF_MINES); 
@@ -91,10 +91,10 @@ function checkGameEnd()
 
   if(win)
   {
-    messageText.textContent = 'You WIN'
+    messageText.textContent = 'Ура! Вы нашли все мины за ## секунд и N ходов!'
   }
   if(lose) {
-    messageText.textContent = 'You LOSE'
+    messageText.textContent = 'Игра окончена. Попробуйте еще раз'
     gameBoard.forEach(row =>{
       row.forEach(tile => {
         if(tile.TILE_STATUSES === TILE_STATUSES.MARKED) markTile(tile)
