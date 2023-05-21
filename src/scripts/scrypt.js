@@ -83,22 +83,21 @@ function listMinesLeft() {
 }
 
 tile.element.addEventListener('click', () => {
-  clearTimeout(longPressTimeout); // Clear the long-press timeout
+  clearTimeout(longPressTimeout); 
   revealTile(gameBoard, tile);
   checkGameEnd();
 });
 
-tile.element.addEventListener('mousedown', () => {
+tile.element.addEventListener('touchstart', () => {
   longPressTimeout = setTimeout(() => {
     markTile(tile);
     listMinesLeft();
-  }, 500); // Set the long-press timeout to 500ms (adjust as needed)
+  }, 50); 
 });
 
-tile.element.addEventListener('mouseup', () => {
-  clearTimeout(longPressTimeout); // Clear the long-press timeout
+tile.element.addEventListener('touchend', () => {
+  clearTimeout(longPressTimeout); 
 });
-
 
 function checkGameEnd()
 {
