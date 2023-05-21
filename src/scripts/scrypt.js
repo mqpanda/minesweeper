@@ -39,8 +39,9 @@ document.body.appendChild(board);
 
 
 const BOARD_SIZE = 10
-const NUMBER_OF_MINES = 10
+const NUMBER_OF_MINES = 2
 
+let longPressTimeout;
 
 const gameBoard = createBoard(BOARD_SIZE, NUMBER_OF_MINES); 
 const boardElement = document.querySelector(".board")
@@ -80,6 +81,23 @@ function listMinesLeft() {
 
   minesLeftText.textContent = NUMBER_OF_MINES - markedTilesCount;
 }
+
+tile.element.addEventListener('click', () => {
+  clearTimeout(longPressTimeout); // Clear the long-press timeout
+  revealTile(gameBoard, tile);
+  checkGameEnd();
+});
+
+tile.element.addEventListener('mousedown', () => {
+  longPressTimeout = setTimeout(() => {
+    markTile(tile);
+    listMinesLeft();
+  }, 500); // Set the long-press timeout to 500ms (adjust as needed)
+});
+
+tile.element.addEventListener('mouseup', () => {
+  clearTimeout(longPressTimeout); // Clear the long-press timeout
+});
 
 
 function checkGameEnd()
