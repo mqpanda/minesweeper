@@ -39,7 +39,7 @@ document.body.appendChild(board);
 
 
 const BOARD_SIZE = 10
-const NUMBER_OF_MINES = 10
+const NUMBER_OF_MINES = 2
 
 
 const gameBoard = createBoard(BOARD_SIZE, NUMBER_OF_MINES); 
