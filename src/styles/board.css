@@ -1,0 +1,98 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  -webkit-user-select: none; /* Disable text selection for Chrome, Safari, and Opera */
+  -moz-user-select: none; /* Disable text selection for Firefox */
+  -ms-user-select: none; /* Disable text selection for Internet Explorer and Edge */
+  user-select: none; /* Disable text selection for standard-compliant browsers */
+}
+
+.board {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+
+.board{
+  display: inline-grid;
+
+  margin-top: 20px;
+
+  grid-template-columns: repeat(var(--size), 300px);
+  grid-template-rows: repeat(var(--size), 300px);
+  gap: 4px;
+
+  background-color: #777;
+  
+
+  
+}
+
+.board > * {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: #FFFFFF;
+  border: 2px solid #BBB;
+
+  user-select: none;
+}
+
+.board > [data-status = "hidden"] {
+  background-color: #BBBBBB;
+  cursor: pointer;
+}
+
+.board > [data-status = "mine"] {
+  background-color: #FF0000;
+}
+
+.board > [data-status = "number"] {
+  background-color: none;
+}
+
+.board > [data-status = "marked"] {
+  background-color: #EEFF00;
+}
+
+.board > [data-status = "flagged"] {
+  background-color: #EEFF00;
+}
+
+@media screen and (min-width: 901px) {
+  .board {
+    grid-template-columns: repeat(var(--size, 8), 30px);
+    grid-template-rows: repeat(var(--size, 8), 30px);
+  }
+}
+
+@media screen and (min-width: 601px) and (max-width: 900px) {
+  .board {
+    grid-template-columns: repeat(var(--size, 8), 20px);
+    grid-template-rows: repeat(var(--size, 8), 20px);
+  }
+}
+
+
+@media screen and (max-width: 600px) {
+  .board {
+    grid-template-columns: repeat(var(--size, 8), 20px);
+    grid-template-rows: repeat(var(--size, 8), 20px);
+  }
+}
+
+
+
+.board {
+  /* Other styles */
+  touch-action: none;
+}
+
